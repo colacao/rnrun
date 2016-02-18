@@ -1,0 +1,35 @@
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot'); 
+  src: url('iconfont.woff') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf') format('truetype')
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+html { width: 100%; height: 100%; max-width: 100vw; max-height: 100vh; overflow: hidden; }
+body { margin:0; padding: 0; font-size: 16px; color: #444; background: #f5f5f5;font-family:"FZLTXHK--GBK1-0","Lantinghei SC","Helvetica Neue",Helvetica,STHeiTi,sans-serif }
+.rn-header { position: relative; height: 40px; padding: 0 1em; line-height: 40px;  font-weight: bold;  background: #F6F6F6;    border-bottom: 1px solid #ddd; }
+.rn-header .hr { position: absolute;  right: 0; top: 0; padding: 0 10px; background-color: #eee; line-height: 30px; background-color: #eee; font-weight: normal; font-size: 14px; }
+.rn-content {  }
+.rn-sider{ width: 200px; height: 100vh; border-right: 1px solid #DCDCDC;position: relative;overflow-y: scroll; }
+.rn-sider-menu { margin:0; padding: 0;  list-style-type: none; }
+.rn-sider-menu li { margin:0; padding: 0; line-height: 2em; padding-left: 10px; }
+.rn-sider-menu li.active { background-color: #cdcdcd; }
+
+.rn-main { width: calc(100% - 202px); overflow: hidden;height: 100vh; }
+.rn-mask-overlay {position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.75); -webkit-backdrop-filter: blur(5px); }
+.rn-mask { position: absolute; top:50%; left: 50%; -webkit-transform:translate(-50%,-50%); background-color: #fff; -webkit-box-sizing: border-box; box-sizing: border-box; border-radius: 5px; }
+.rn-mask .hd { padding: 10px;  font-size: 14px;border-bottom: 1px solid #e0e0e0; }
+.rn-mask .bd { padding: 20px; }
+
+.down { width: 400px; }
+.down .bd { text-align: center; }

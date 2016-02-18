@@ -1,5 +1,7 @@
 <!doctype html>
-<title>rnrun</title>
+<title>RNRun</title>
+<head>
+
 <meta charset="utf-8"/>
 <link rel=stylesheet href="../doc/docs.css">
 
@@ -52,31 +54,25 @@
 <script src="../mode/javascript/javascript.js"></script>
 <script src="../addon/selection/active-line.js"></script>
 <script src="../addon/edit/matchbrackets.js"></script>
-<style type="text/css">
-    html,body,article,textarea{width:100%;height: 100%;}
-    .CodeMirror{height: 80%}
-      #code{visibility: hidden;}
-      .CodeMirror {border: 1px solid black; font-size:13px}
-    </style>
+
+<link rel="stylesheet" href="../theme/yeti.css">
+<link rel="stylesheet" href="../theme/zenburn.css">
+<link rel="stylesheet" href="../asset/reset.css">
+<style>
+  .rn-sider{float: left;}
+  .CodeMirror{height: 90%}
+.console{height: 10%;width:100%;}
+</style>
+</head>
+<body>
 
 
-<article>
-<h2>react-native code</h2>
-<textarea id="code" name="code">
-function findSequence(goal) {
-  function find(start, history) {
-    if (start == goal)
-      return history;
-    else if (start > goal)
-      return null;
-    else
-      return find(start + 5, "(" + history + " + 5)") ||
-             find(start * 3, "(" + history + " * 3)");
-  }
-  return find(1, "1");
-}</textarea>
 
-<!-- <p>Select a theme: <select onchange="selectTheme()" id=select>
+  <header class="rn-header"> RNRun 
+
+    <div class="hr">
+    主题:
+<select onchange="selectTheme()" id=select>
     <option selected>default</option>
     <option>3024-day</option>
     <option>3024-night</option>
@@ -124,8 +120,86 @@ function findSequence(goal) {
     <option>yeti</option>
     <option>zenburn</option>
 </select>
-</p> -->
+    <i class="iconfont">&#xe602;</i> 手机运行</div>
+  </header>
+  <div class="rn-content">
+      <div class="rn-sider">
+        <ul class="rn-sider-menu">
+<!--           <li class="active"><i class="iconfont">&#xe600;</i> <span>index.android.js</span></li>
+ -->          <li class="active"><i class="iconfont">&#xe600;</i> <span>index.ios.js</span></li>
+        </ul>
+      </div>
+      <div class="rn-main">
+        <textarea id="code" name="code">
+'use strict';
+import React, {
+  AppRegistry,
+  Component,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from 'react-native';
+import Camera from 'react-native-camera';
 
+class Qr extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Camera
+          ref={(cam) => {
+            this.camera = cam;
+          }}
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.Fill}>
+          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+        </Camera>
+      </View>
+    );
+  }
+
+  takePicture() {
+    this.camera.capture()
+      .then((data) => console.log(data))
+      .catch(err => console.error(err));
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    color: '#000',
+    padding: 10,
+    margin: 40
+  }
+});
+
+module.exports = Qr;</textarea>
+      <div class="console">console</div>
+
+      </div>
+  </div>
+
+<!-- <div class="rn-mask-overlay"></div>  
+<div class="rn-mask down">
+  <div class="hd">扫描二维码下载</div>
+  <div class="bd"><img src="http://img2.tbcdn.cn/tfscom/TB1Jg3wHpXXXXc0aXXXSutbFXXX.jpg" alt=""></div>
+</div> -->
+
+</html>
 <script>
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     theme:"zenburn",
@@ -152,4 +226,5 @@ function findSequence(goal) {
     if (theme) { input.value = theme; selectTheme(); }
   });
 </script>
-  </article>
+  </body>
+  </html>

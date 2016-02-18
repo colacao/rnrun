@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react-native": "^0.20.0",
+    "react-native-camera": "^0.3.8",
+    "react-native-device-info": "^0.8.3",
+    "react-native-vector-icons": "^1.2.0"
+  }
+}

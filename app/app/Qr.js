@@ -11,6 +11,21 @@ import React, {
 import Camera from 'react-native-camera';
 
 class Qr extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cameraType: Camera.constants.Type.back,
+      isback:false
+    };
+  }
+  onBarCodeRead(e){
+    if(!this.state.isback){
+          this.props.resultHandler(e);
+
+      this.props.pnav.jumpBack();
+      this.state.isback=true;
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -19,8 +34,10 @@ class Qr extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
+          type={this.state.cameraType}
+          barCodeType="qr"
+          onBarCodeRead={this.onBarCodeRead.bind(this)}
           aspect={Camera.constants.Aspect.Fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
         </Camera>
       </View>
     );

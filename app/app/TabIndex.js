@@ -15,15 +15,9 @@ var {
 var TabArr = [
     {
         key: 0,
-        title: '资讯',
+        title: '广场',
         icon: 'ios-list-outline',
         selectedIcon:'ios-list',
-    },
-    {
-        key: 1,
-        title: '收藏',
-        icon: 'ios-paper-outline',
-        selectedIcon:'ios-paper',
     }
 ];
 

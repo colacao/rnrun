@@ -1,6 +1,8 @@
 package com.app;
 
 import com.facebook.react.ReactActivity;
+import com.learnium.RNNetworkingManager.RNNetworkingManagerModule;
+import com.rnfs.RNFSPackage;
 import com.lwansbrough.ReactCamera.ReactCamera;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -38,6 +40,8 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new RNNetworkingManagerModule(),
+        new RNFSPackage(),
         new ReactCamera(),
         new VectorIconsPackage(),
         new RNDeviceInfo()

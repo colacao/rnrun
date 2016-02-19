@@ -9,6 +9,8 @@ import React, {
   Navigator,
   AsyncStorage,
   TouchableOpacity,
+  View,
+  Image,
   Text
 } from 'react-native';
 
@@ -17,10 +19,17 @@ import TabIndex from './app/TabIndex';
 import Detail from './app/Detail';
 import Statistic from './app/Statistic';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Qr from './app/Qr';
+
+
+var RNFS = require('react-native-fs');
+
+var RNNetworkingManager = require('react-native-networking');
 
 var STAR_KEY = "toutiao-star-";
 
 var rnrun = React.createClass({
+  
     getInitialState: function() {
         return {
             hideNavBar:true,
@@ -32,13 +41,58 @@ var rnrun = React.createClass({
         this._initGetData();
         Statistic.Run();
     },
+    handleResult:function(result){
+      console.log(result);
+      console.log(RNNetworkingManager);
+      this.state.scanned = true
+
+      var url ='http://cdn.mifengwo.me/AwesomeProject.zip';// result.data
+      RNNetworkingManager.requestFile(url, {
+          'method':'GET'
+      }, function(results) {
+            var path = RNFS.DocumentDirectoryPath + '/AwesomeProject.zip';
+
+         RNFS.writeFile(path, results, 'utf8')
+      .then((success) => {
+        console.log('写成功了');
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+      });
+
+
+   
+
+
+    // alert(
+    //   result.data,
+    //   JSON.stringify(result),
+    //   [
+    //     {text: 'Foo', onPress: () => console.log('Foo Pressed!')},
+    //     {text: 'Bar', onPress: () => console.log('Bar Pressed!')},
+    //   ]
+    // );
+//      this.props.navigator.push({title: 'Scan Result', component: ScannerResult, passProps: {data: result.data, returnHandler: this.reset.bind(this)}});
+   
+    },
+    reset() {
+      this.state.scanned = false
+    },
     _renderScene: function(route,nav) {
         switch (route.sence) {
             case 'tab':
                 return <TabIndex route={route} pnav={nav} starDatas={this.state.starDatas}/>
                 break;
-            case 'detail':
-                return <Detail route={route} pnav={nav} id={route.id} />
+            case 'qr':
+                return  <View style={styles.qr}>
+                             
+                          <Qr route={route} pnav={nav} id={route.id} resultHandler={this.handleResult}>
+                           <Image
+        source={require('image!mengban_04')}
+      />
+                          </Qr>
+                              </View>
                 break;
             default:
         }
@@ -90,7 +144,7 @@ var rnrun = React.createClass({
     },
     //
     _navBar: function() {
-        if(!this.state.hideNavBar) {
+       
             return <Navigator.NavigationBar
                       routeMapper={{
                           LeftButton: this.LeftButton,
@@ -99,13 +153,12 @@ var rnrun = React.createClass({
                       }}
                       style={styles.navBar}
                     />;
-        } else {
-            return <Text style={{height:0,}}/>;
-        }
+       
     },
     // Nav使用
     LeftButton: function(route, navigator, index, navState) {
-        return (
+
+        return index?(
           <TouchableOpacity
             onPress={() => navigator.pop()}
             style={styles.navBarLeftButton}>
@@ -116,80 +169,97 @@ var rnrun = React.createClass({
                 style={styles.icon}
             />
           </TouchableOpacity>
-        );
+        ):null;
     },
     RightButton: function(route, navigator, index, navState) {
-      if(route.isStar) {
-          return (
+         return !index?(
               <TouchableOpacity
                onPress={()=>this._changeDetailStar(route,navigator,this.state.starDatas)}
                 style={styles.navBarRightButton}>
                 <Icon
-                    name='ios-star'
+                    name='qr-scanner'
                     size={30}
                     color='#333'
                     style={styles.icon}
                 />
               </TouchableOpacity>
-          );
-      } else {
-          return (
-              <TouchableOpacity
-               onPress={()=>this._changeDetailStar(route,navigator,this.state.starDatas)}
-                style={styles.navBarRightButton}>
-                <Icon
-                    name='ios-star-outline'
-                    size={30}
-                    color='#333'
-                    style={styles.icon}
-                />
-              </TouchableOpacity>
-          );
-      }
+          ):null;
+
+      // if(route.isStar) {
+      //     return (
+      //         <TouchableOpacity
+      //          onPress={()=>this._changeDetailStar(route,navigator,this.state.starDatas)}
+      //           style={styles.navBarRightButton}>
+      //           <Icon
+      //               name='ios-star'
+      //               size={30}
+      //               color='#333'
+      //               style={styles.icon}
+      //           />
+      //         </TouchableOpacity>
+      //     );
+      // } else {
+      //     return (
+      //         <TouchableOpacity
+      //          onPress={()=>this._changeDetailStar(route,navigator,this.state.starDatas)}
+      //           style={styles.navBarRightButton}>
+      //           <Icon
+      //               name='ios-star-outline'
+      //               size={30}
+      //               color='#333'
+      //               style={styles.icon}
+      //           />
+      //         </TouchableOpacity>
+      //     );
+      // }
   },
   _changeDetailStar: function(route,navigator) {
-      var tmpRoute = route;
-      var dataArr = this.state.starDatas;
-        if(dataArr != null) {
-             if(route.isStar) {
-                if(dataArr.length > 0) {
-                    for(var i=0; i< dataArr.length; i++) {
-                        if(dataArr[i].id == route.id) {
-                           dataArr.splice(i,1);
-                           tmpRoute.isStar = !tmpRoute.isStar;
-                           navigator.replace(tmpRoute);
-                           break;
-                        }
-                    }
-                }
-            } else {
-                dataArr.unshift({id: route.id, title: route.title});
-                tmpRoute.isStar = !tmpRoute.isStar;
-                navigator.replace(tmpRoute);
-            }
-        } else {
-            dataArr = [];
-            if(!route.isStar) {
-              dataArr.unshift({id: route.id, title: route.title});
-              tmpRoute.isStar = !tmpRoute.isStar;
-              navigator.replace(tmpRoute);
-            }
-        }
-        this.setState({
-            starDatas: dataArr,
-        });
-        AsyncStorage.setItem(STAR_KEY, JSON.stringify(dataArr)).done();
+
+    navigator.push({
+        title: 'qr',
+        sence:"qr"
+    })
+      // var tmpRoute = route;
+      // var dataArr = this.state.starDatas;
+      //   if(dataArr != null) {
+      //        if(route.isStar) {
+      //           if(dataArr.length > 0) {
+      //               for(var i=0; i< dataArr.length; i++) {
+      //                   if(dataArr[i].id == route.id) {
+      //                      dataArr.splice(i,1);
+      //                      tmpRoute.isStar = !tmpRoute.isStar;
+      //                      navigator.replace(tmpRoute);
+      //                      break;
+      //                   }
+      //               }
+      //           }
+      //       } else {
+      //           dataArr.unshift({id: route.id, title: route.title});
+      //           tmpRoute.isStar = !tmpRoute.isStar;
+      //           navigator.replace(tmpRoute);
+      //       }
+      //   } else {
+      //       dataArr = [];
+      //       if(!route.isStar) {
+      //         dataArr.unshift({id: route.id, title: route.title});
+      //         tmpRoute.isStar = !tmpRoute.isStar;
+      //         navigator.replace(tmpRoute);
+      //       }
+      //   }
+      //   this.setState({
+      //       starDatas: dataArr,
+      //   });
+      //   AsyncStorage.setItem(STAR_KEY, JSON.stringify(dataArr)).done();
   },
   Title: function(route, navigator, index, navState) {
-    return null;
+    return (<Text style={styles.title}>RNRun</Text>)
   },
 });
 
 var styles = StyleSheet.create({
   navBar: {
-      backgroundColor:'#fff',
+      backgroundColor:'red',
       borderColor:'#dddddd',
-      borderWidth:1
   },
   navBarTitleText: {
     fontWeight: '500',
@@ -200,7 +270,17 @@ var styles = StyleSheet.create({
   navBarRightButton: {
       marginRight:5,
   },
+  title:{
+        fontWeight: '500',
+        color:"#ffffff",
+        paddingTop: 5,
+        fontSize: 25
+  },
+  qr:{
+  },
   icon: {
+            color:"#ffffff",
+
       width:30,
       height:30,
       marginTop:6,

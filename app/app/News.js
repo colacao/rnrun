@@ -23,41 +23,6 @@ var ROUTE_STACK = [
         name: "推荐",
         sign: "index",
         page: 'lists',
-    },
-    {
-        name: "新闻",
-        sign: "news",
-        page: 'lists',
-    },
-    {
-        name: "搞笑",
-        sign: "joke",
-        page: 'lists',
-    },
-    {
-        name: "视频",
-        sign: "video",
-        page: 'lists',
-    },
-    {
-        name: "娱乐",
-        sign: "entertainment",
-        page: 'lists',
-    },
-    {
-        name: "时尚",
-        sign: "fashion",
-        page: 'lists',
-    },
-    {
-        name: "科技",
-        sign: "tech",
-        page: 'lists',
-    },
-    {
-        name: "体育",
-        sign: "sports",
-        page: 'lists',
     }
 ];
 

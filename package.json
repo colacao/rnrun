@@ -1,0 +1,26 @@
+{
+  "name": "rnrun",
+  "version": "1.0.0",
+  "description": "在线react-native代码分享，运行平台",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colacao/rnrun.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colacao/rnrun/issues"
+  },
+  "homepage": "https://github.com/colacao/rnrun#readme",
+  "dependencies": {
+    "ejs": "^2.4.1",
+    "express": "^4.13.4"
+  }
+}

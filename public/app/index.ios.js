@@ -20,8 +20,7 @@ import Detail from './app/Detail';
 import Statistic from './app/Statistic';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Qr from './app/Qr';
-
-
+var ZIP = require('react-native-zip-archive');
 var RNFS = require('react-native-fs');
 
 var RNNetworkingManager = require('react-native-networking');
@@ -40,26 +39,67 @@ var rnrun = React.createClass({
         // 异步获取
         this._initGetData();
         Statistic.Run();
+       
+        this._readDir(RNFS.DocumentDirectoryPath+'/111');
     },
-    handleResult:function(result){
-      console.log(result);
-      console.log(RNNetworkingManager);
-      this.state.scanned = true
+    _unZipFile:function(name){
+        //console.log('_unZipFile',name);
+        let sourcePath = RNFS.DocumentDirectoryPath+'/'+name
+        let targetPath = RNFS.DocumentDirectoryPath+'/'+name.split('.')[0]
 
-      var url ='http://cdn.mifengwo.me/AwesomeProject.zip';// result.data
-      RNNetworkingManager.requestFile(url, {
-          'method':'GET'
-      }, function(results) {
-            var path = RNFS.DocumentDirectoryPath + '/AwesomeProject.zip';
-
-         RNFS.writeFile(path, results, 'utf8')
-      .then((success) => {
-        console.log('写成功了');
+        ZIP.unzip(sourcePath, targetPath)
+        .then(() => {
+          console.log('unzip completed!')
+          this._readDir(targetPath);
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    _run:function(code){
+        new Function('alert("aa")')();
+     },
+    _readDir:function(path){
+      RNFS.readFile(path+'/AwesomeProject/index.ios.js', 'utf8')
+      .then((contents)=>{
+          console.log(contents)
+          this._run(contents);
       })
       .catch((err) => {
-        console.log(err.message);
+          console.log(err.message, err.code);
       });
+    },
+    handleResult:function(result){
+     // console.log(result);
+      //console.log(RNNetworkingManager);
+      this.state.scanned = true
+
+
+      var url ='http://cdn.mifengwo.me/AwesomeProject.zip';// result.data
+      var path = RNFS.DocumentDirectoryPath + '/111.zip';
+
+      RNFS.downloadFile(url,path)
+      .then(()=>{
+         console.log('Alerta','下载完成');
+         this._unZipFile('111.zip');
+      })
+      .catch(()=>{
+        console.log('Error','下载出错');
       });
+
+
+      // RNNetworkingManager.requestFile(url, {
+      //     'method':'GET'
+      // }, function(results) {
+
+      //    RNFS.writeFile(path, results, 'utf8')
+      // .then((success) => {
+      //   console.log('写成功了');
+      // })
+      // .catch((err) => {
+      //   console.log(err.message);
+      // });
+      // });
 
 
    

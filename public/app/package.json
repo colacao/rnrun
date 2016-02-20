@@ -6,11 +6,13 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@remobile/react-native-zip": "^1.0.2",
     "react-native": "^0.20.0",
     "react-native-camera": "^0.3.8",
     "react-native-device-info": "^0.8.3",
     "react-native-fs": "^1.2.0",
     "react-native-networking": "^0.1.1",
-    "react-native-vector-icons": "^1.2.0"
+    "react-native-vector-icons": "^1.2.0",
+    "react-native-zip-archive": "0.0.6"
   }
 }

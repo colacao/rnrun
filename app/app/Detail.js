@@ -15,13 +15,15 @@ var {
 
 var Detail = React.createClass({
   getInitialState: function() {
+    console.log("DetailDetailDetailDetailDetailDetail");
     return {uri: "about:blank"};
   },
     componentDidMount: function() {
-      this.props.pnav.title="呵呵"
+      console.log("http://172.31.0.153:8808/apps/1");
+      console.log(this.props.id);
       setTimeout(function(){
       this.setState({
-          uri:"http://m.yergoo.com/api/news/app/" + this.props.id
+          uri:"http://172.31.0.153:8808/apps/1"
         });
     }.bind(this),200)
 

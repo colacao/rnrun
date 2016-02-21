@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var PRE_LIST_URL = "http://m.yergoo.com/api/news/app/lists/";
+var PRE_LIST_URL = "http://172.31.0.153:8808/api/";
 var LISTS_KEY = "toutiao-kailuo99-";
 var Li = require('./Li');
 
@@ -78,7 +78,7 @@ var List = React.createClass({
       } else {
         var begin_id = this.state.datas.max;
       }
-      var url = PRE_LIST_URL + this.props.route.sign + '?beginid=' + begin_id;
+      var url = PRE_LIST_URL + this.props.route.sign + '/' + begin_id;
       console.log(url);
       fetch(url)
         .then((response) => response.json())
@@ -116,22 +116,22 @@ var List = React.createClass({
   },
   // 进入详情页
   navHandleChange: function(data) {
-      if(this.props.starDatas != null) {
-          for(var i = 0; i < this.props.starDatas.length; i++) {
-              if(this.props.starDatas[i].id == data.id) {
-                  this.props.pnav.push({
-                      id: data.id,
-                      sence:'detail',
-                      isStar: true,
-                      title: data.title,
-                      sceneConfig: Navigator.SceneConfigs.VerticalUpSwipeJump
+      // if(this.props.starDatas != null) {
+      //     for(var i = 0; i < this.props.starDatas.length; i++) {
+      //         if(this.props.starDatas[i].id == data.id) {
+      //             this.props.pnav.push({
+      //                 id: data.id,
+      //                 sence:'detail',
+      //                 isStar: true,
+      //                 title: data.title,
+      //                 sceneConfig: Navigator.SceneConfigs.VerticalUpSwipeJump
 
-                  });
-                  return;
-              }
-          }
-      }
-
+      //             });
+      //             return;
+      //         }
+      //     }
+      // }
+      console.log("==============",data.id);
       this.props.pnav.push({
           id:data.id,
           sence:'detail',

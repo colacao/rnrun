@@ -121,6 +121,9 @@ var rnrun = React.createClass({
     },
     _renderScene: function(route,nav) {
         switch (route.sence) {
+            case 'detail':
+                return <Detail route={route} pnav={nav} id={route.id} />
+                break;
             case 'tab':
                 return <TabIndex route={route} pnav={nav} starDatas={this.state.starDatas}/>
                 break;

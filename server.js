@@ -1,6 +1,15 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser');
+var path = require('path');
 var app = express();
+var fs = require('fs');
+
+var multer  = require('multer');
+var upload = multer({ dest: '/tmp' })
+
+
+
 app.set('port', process.env.PORT || 8808);
 app.set('views', __dirname + '/view');
 app.set('view engine', 'html');
@@ -63,6 +72,47 @@ app.get('/', function(req, res) {
 });
 app.get('/add', function(req, res) {
   res.render('add', {});
+});
+
+function mkdirsSync(dirpath, mode) { 
+  console.log(dirpath);
+    if (!fs.existsSync(dirpath)) {
+        var pathtmp;
+        dirpath.split(path.sep).forEach(function(dirname) {
+            if (pathtmp) {
+                pathtmp = path.join(pathtmp, dirname);
+            }
+            else {
+                pathtmp = dirname;
+            }
+            if (!fs.existsSync(pathtmp)) {
+                if (!fs.mkdirSync(pathtmp, mode)) {
+                    return false;
+                }
+            }
+        });
+    }
+    return true; 
+}
+
+app.post('/upload',upload.single('uploadImg'),function(req,res,next){
+    
+  var tmp_path = req.file.path;
+  var target_path = './public/upload/' + req.body["path"];
+  var arr = target_path.split('/');
+  arr.pop();
+mkdirsSync(arr.join('/'));
+  var src = fs.createReadStream(tmp_path);
+  var dest = fs.createWriteStream(target_path);
+  src.pipe(dest);
+    res.json({
+      id:req.body["post_id"],
+      path:req.body["path"],
+      file:req.file
+    });
+ // src.on('end', function() { res.render('complete'); });
+  //src.on('error', function(err) { res.render('error'); });
+
 });
 app.get('/apps/:id', function(req, res) {
   res.render('add', {});

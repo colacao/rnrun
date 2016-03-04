@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/colacao/rnrun#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "ejs": "^2.4.1",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "multer": "^1.1.0"
   }
 }

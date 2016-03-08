@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var PRE_LIST_URL = "http://172.31.0.153:8808/api/";
+var PRE_LIST_URL = "http://192.168.240.37:8808/api/";
 var LISTS_KEY = "toutiao-kailuo99-";
 var Li = require('./Li');
 

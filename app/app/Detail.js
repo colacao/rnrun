@@ -19,11 +19,11 @@ var Detail = React.createClass({
     return {uri: "about:blank"};
   },
     componentDidMount: function() {
-      console.log("http://172.31.0.153:8808/apps/1");
+      console.log("http://192.168.240.37:8808/apps/1");
       console.log(this.props.id);
       setTimeout(function(){
       this.setState({
-          uri:"http://172.31.0.153:8808/apps/1"
+          uri:"http://192.168.240.37:8808/apps/1"
         });
     }.bind(this),200)
 

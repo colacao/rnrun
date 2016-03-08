@@ -60,10 +60,69 @@
 <script src="../addon/selection/active-line.js"></script>
 <script src="../addon/edit/matchbrackets.js"></script>
 
+
+<script src="../lib/upload.js"></script>
+
+
 <link rel="stylesheet" href="../theme/yeti.css">
 <link rel="stylesheet" href="../theme/zenburn.css">
 <link rel="stylesheet" href="../asset/reset.css">
+
+
+
+  <link rel="stylesheet" href="../lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+  <script type="text/javascript" src="../lib/zTree_v3/js/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.core.js"></script>
+
+
+  <script>
+    
+    var setting = {
+      data: {
+        simpleData: {
+          enable: true
+        }
+      }
+    };
+
+    var zNodes =[
+      { id:1, pId:0, name:"父节点1 - 展开", open:true},
+      { id:11, pId:1, name:"父节点11 - 折叠"},
+      { id:111, pId:11, name:"叶子节点111"},
+      { id:112, pId:11, name:"叶子节点112"},
+      { id:113, pId:11, name:"叶子节点113"},
+      { id:114, pId:11, name:"叶子节点114"},
+      { id:12, pId:1, name:"父节点12 - 折叠"},
+      { id:121, pId:12, name:"叶子节点121"},
+      { id:122, pId:12, name:"叶子节点122"},
+      { id:123, pId:12, name:"叶子节点123"},
+      { id:124, pId:12, name:"叶子节点124"},
+      { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+      { id:2, pId:0, name:"父节点2 - 折叠"},
+      { id:21, pId:2, name:"父节点21 - 展开", open:true},
+      { id:211, pId:21, name:"叶子节点211"},
+      { id:212, pId:21, name:"叶子节点212"},
+      { id:213, pId:21, name:"叶子节点213"},
+      { id:214, pId:21, name:"叶子节点214"},
+      { id:22, pId:2, name:"父节点22 - 折叠"},
+      { id:221, pId:22, name:"叶子节点221"},
+      { id:222, pId:22, name:"叶子节点222"},
+      { id:223, pId:22, name:"叶子节点223"},
+      { id:224, pId:22, name:"叶子节点224"},
+      { id:23, pId:2, name:"父节点23 - 折叠"},
+      { id:231, pId:23, name:"叶子节点231"},
+      { id:232, pId:23, name:"叶子节点232"},
+      { id:233, pId:23, name:"叶子节点233"},
+      { id:234, pId:23, name:"叶子节点234"},
+      { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+    ];
+
+    $(document).ready(function(){
+      $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    });
+  </script>
 <style>
+
   .rn-sider{float: left;}
   .CodeMirror{height: 90%}
 .console{height: 10%;width:100%;}
@@ -125,11 +184,11 @@
     <option>yeti</option>
     <option>zenburn</option>
 </select>
-    <i class="iconfont" id="runphone">&#xe602;手机运行</i> </div>
+    <i class="iconfont" id="runphone">&#xe602;手机运行1<%= id %></i> </div>
   </header>
   <div class="rn-content">
-      <div class="rn-sider">
-        <ul class="rn-sider-menu">
+      <div class="rn-sider ztree" style="padding:0">
+        <ul class="rn-sider-menu" id="treeDemo">
 <!--           <li class="active"><i class="iconfont">&#xe600;</i> <span>index.android.js</span></li>
  -->          <li class="active"><i class="iconfont">&#xe600;</i> <span>index.ios.js</span></li>
         </ul>
@@ -238,87 +297,15 @@ module.exports = Qr;</textarea>
   }
 
 
-;(function(){
-       var Upload = function(url, token, file, filename, filedata, contentType) {
-         var send = function() {
-             var formData = new FormData;
-             // formData.append("_wpnonce", _wpPluploadSettings.defaults.multipart_params._wpnonce);
-             // formData.append("action", "upload-attachment");
-             formData.append("post_id", "abcdefg");
-            formData.append("path", filename);
-
-             formData.append('uploadImg', file, filename);
-             var xhr = new XMLHttpRequest();
-             xhr.open('post', url, true);
-             xhr.send(formData);
-             xhr.onload = function() {
-                console.log(xhr.responseText);
-                 // var data = eval('(' + xhr.responseText + ')');
-                 // document.querySelector("#content_ifr").contentWindow.document.execCommand("insertImage", false, data.data.url)
-             }
-         };
-         send();
-     };
-     var drapHandler = function(el) {
-         el.addEventListener("dragenter", function(e) {
-             e.stopPropagation();
-             e.preventDefault();
-         }, false);
-         el.addEventListener("dragover", function(e) {
-             e.stopPropagation();
-             e.preventDefault();
-         }, false);
-         function traverseFileTree(item, path) {
-  path = path || "";
-  if (item.isFile) {
-    // Get file
-    item.file(function(file) {
-       var ctype = file.type;
-             var blob = file.getAsFile ? file.getAsFile() : file;
-             var oFReader = new FileReader();
-             oFReader.readAsBinaryString(blob);
-             oFReader.onload = function() {
-              //debugger;
-                 var url = decodeURIComponent("/upload/");
-                 var type = blob.type;
-                 var name = blob.name
-                // debugger;
-                 Upload(url, "", blob, path+name, this.result, ctype);
-             }
-      console.log("File:", path + file.name);
-    });
-  } else if (item.isDirectory) {
-    // Get folder contents
-    var dirReader = item.createReader();
-    dirReader.readEntries(function(entries) {
-      for (var i=0; i<entries.length; i++) {
-        traverseFileTree(entries[i], path + item.name + "/");
-      }
-    });
-  }
-}
-         el.addEventListener("drop", function(e) {
-             e.stopPropagation();
-             e.preventDefault();
-             for(var i=0;i<e.dataTransfer.items.length;i++){
-            var entry = e.dataTransfer.items[i].webkitGetAsEntry();
-    if (entry) {
-      traverseFileTree(entry);
-    }
-   
-          }
-             //uploadFiles(e.dataTransfer.files);
-         }, false);
-     };
-     (function() {
-
-         if (document.querySelector(".rn-sider")) {
-             drapHandler(document.querySelector(".rn-sider"));
-         } else {
-             setTimeout(arguments.callee, 1000);
-         }
-     })();
-})();
+;(function() {
+     if (document.querySelector(".rn-sider")) {
+         drapHandler(document.querySelector(".rn-sider"),function(){
+            console.log(arguments);
+         });
+     } else {
+         setTimeout(arguments.callee, 1000);
+     }
+ })();
 
 </script>
   </body>

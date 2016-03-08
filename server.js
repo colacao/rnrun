@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -166,32 +166,43 @@ app.post('/upload', upload.single('uploadImg'), function(req, res, next) {
   });
 });
 
-app.get('/apps/:id', function(req, res) {
+
+app.get('/app/:id', function(req, res) {
    var db = new sqlite3.Database('db/rnrun.sqlite3');
   db.all('select * from files where pid=$pid', {
     $pid: 1
   }, function(err, rows) {
     db.close();
-    //console.log(rows);
-    res.render('add', {
-      id: req.params.beginid,
-      data: (function(data) {
-        var ret = [];
-        for (var i = 0; i < data.length; i++) {
-            var obj = {
-              id:data[i].path+"/"+data[i].name,
-              pid:data[i].path,
-              name:data[i].name
-            }
-            ret.push(obj);
-        }
-        console.log(ret);
-        return ret;
-      })(rows)
+    res.json((function(data) {
+  var ret = [];
+  ret.push({
+    id:1,
+    pId:0,
+    name:"fuck",
+    open:true
+  });
+  for (var i = 0; i < data.length; i++) {
+    var obj = {
+      id: (function(p,n){
+          return (p.replace("./public/upload/","").split('/').length)+1
+      })(data[i].path, data[i].name),
+      pId: (function(p,n){
+          return (p.replace("./public/upload/","").split('/').length)
+      })(data[i].path, data[i].name),
+      name: data[i].name
+    }
+    ret.push(obj);
+  }
+  //console.log(ret);
+  return ret;
+})(rows)
+);
+ });
+});
+app.get('/apps/:id', function(req, res) {
+     res.render('add', {
+      id: req.params.beginid
     });
-
-  })
-
 });
 app.get('/api/index/:beginid', function(req, res) {
   console.log(req.params.beginid);

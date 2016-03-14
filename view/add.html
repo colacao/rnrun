@@ -1,290 +1,350 @@
 <!doctype html>
-<title>RNRun</title>
+<title>
+    RNRun
+</title>
 <head>
-
- <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta content="telephone=no" name="format-detection" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel=stylesheet href="../doc/docs.css"/>
+    <link rel="stylesheet" href="../lib/codemirror.css"/>
+    <link rel="stylesheet" href="../theme/3024-day.css"/>
+    <link rel="stylesheet" href="../theme/3024-night.css"/>
+    <link rel="stylesheet" href="../theme/abcdef.css"/>
+    <link rel="stylesheet" href="../theme/ambiance.css"/>
+    <link rel="stylesheet" href="../theme/base16-dark.css"/>
+    <link rel="stylesheet" href="../theme/bespin.css"/>
+    <link rel="stylesheet" href="../theme/base16-light.css"/>
+    <link rel="stylesheet" href="../theme/blackboard.css"/>
+    <link rel="stylesheet" href="../theme/cobalt.css"/>
+    <link rel="stylesheet" href="../theme/colorforth.css"/>
+    <link rel="stylesheet" href="../theme/dracula.css"/>
+    <link rel="stylesheet" href="../theme/eclipse.css"/>
+    <link rel="stylesheet" href="../theme/elegant.css"/>
+    <link rel="stylesheet" href="../theme/erlang-dark.css"/>
+    <link rel="stylesheet" href="../theme/hopscotch.css"/>
+    <link rel="stylesheet" href="../theme/icecoder.css"/>
+    <link rel="stylesheet" href="../theme/isotope.css"/>
+    <link rel="stylesheet" href="../theme/lesser-dark.css"/>
+    <link rel="stylesheet" href="../theme/liquibyte.css"/>
+    <link rel="stylesheet" href="../theme/material.css"/>
+    <link rel="stylesheet" href="../theme/mbo.css"/>
+    <link rel="stylesheet" href="../theme/mdn-like.css"/>
+    <link rel="stylesheet" href="../theme/midnight.css"/>
+    <link rel="stylesheet" href="../theme/monokai.css"/>
+    <link rel="stylesheet" href="../theme/neat.css"/>
+    <link rel="stylesheet" href="../theme/neo.css"/>
+    <link rel="stylesheet" href="../theme/night.css"/>
+    <link rel="stylesheet" href="../theme/paraiso-dark.css"/>
+    <link rel="stylesheet" href="../theme/paraiso-light.css"/>
+    <link rel="stylesheet" href="../theme/pastel-on-dark.css"/>
+    <link rel="stylesheet" href="../theme/railscasts.css"/>
+    <link rel="stylesheet" href="../theme/rubyblue.css"/>
+    <link rel="stylesheet" href="../theme/seti.css"/>
+    <link rel="stylesheet" href="../theme/solarized.css"/>
+    <link rel="stylesheet" href="../theme/the-matrix.css"/>
+    <link rel="stylesheet" href="../theme/tomorrow-night-bright.css"/>
+    <link rel="stylesheet" href="../theme/tomorrow-night-eighties.css"/>
+    <link rel="stylesheet" href="../theme/ttcn.css"/>
+    <link rel="stylesheet" href="../theme/twilight.css"/>
+    <link rel="stylesheet" href="../theme/vibrant-ink.css"/>
+    <link rel="stylesheet" href="../theme/xq-dark.css"/>
+    <link rel="stylesheet" href="../theme/xq-light.css"/>
+    <link rel="stylesheet" href="../theme/yeti.css"/>
+    <link rel="stylesheet" href="../theme/zenburn.css"/>
+    <script src="../lib/codemirror.js">
+    </script>
+    <script src="../mode/javascript/javascript.js">
+    </script>
+    <script src="../addon/selection/active-line.js">
+    </script>
+    <script src="../addon/edit/matchbrackets.js">
+    </script>
+    <script src="../lib/upload.js">
+    </script>
+    <link rel="stylesheet" href="../theme/yeti.css"/>
+    <link rel="stylesheet" href="../theme/zenburn.css"/>
+    <link rel="stylesheet" href="../asset/reset.css"/>
+    <script src="../lib/jquery.fileTree-1.01/jquery.js" type="text/javascript">
+    </script>
+    <script src="../lib/jquery.fileTree-1.01/jquery.easing.js" type="text/javascript">
+    </script>
+    <script src="../lib/jquery.fileTree-1.01/jqueryFileTree.js" type="text/javascript">
+    </script>
+    <link href="../lib/jquery.fileTree-1.01/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
+    <script>
+        var maxZIndex=9;
+        $(function(){
+        $('#treeDemo').fileTree({expandSpeed:100,collapseSpeed:100, root: 'public/upload/doc/', script: '../filetree' }, function(file) {
 
-<link rel=stylesheet href="../doc/docs.css">
+          if( window["editor_code_"+ file.replace(/\//g,"_")]){
+           
+             $(".titles span").removeClass('select');
+             $(document.getElementById("title_"+file.replace(/\//g,"_"))).addClass('select');
+            window["editor_code_"+ file.replace(/\//g,"_")].display.wrapper.style.zIndex = maxZIndex++;
+            return;
+          }
 
-<link rel="stylesheet" href="../lib/codemirror.css">
-<link rel="stylesheet" href="../theme/3024-day.css">
-<link rel="stylesheet" href="../theme/3024-night.css">
-<link rel="stylesheet" href="../theme/abcdef.css">
-<link rel="stylesheet" href="../theme/ambiance.css">
-<link rel="stylesheet" href="../theme/base16-dark.css">
-<link rel="stylesheet" href="../theme/bespin.css">
-<link rel="stylesheet" href="../theme/base16-light.css">
-<link rel="stylesheet" href="../theme/blackboard.css">
-<link rel="stylesheet" href="../theme/cobalt.css">
-<link rel="stylesheet" href="../theme/colorforth.css">
-<link rel="stylesheet" href="../theme/dracula.css">
-<link rel="stylesheet" href="../theme/eclipse.css">
-<link rel="stylesheet" href="../theme/elegant.css">
-<link rel="stylesheet" href="../theme/erlang-dark.css">
-<link rel="stylesheet" href="../theme/hopscotch.css">
-<link rel="stylesheet" href="../theme/icecoder.css">
-<link rel="stylesheet" href="../theme/isotope.css">
-<link rel="stylesheet" href="../theme/lesser-dark.css">
-<link rel="stylesheet" href="../theme/liquibyte.css">
-<link rel="stylesheet" href="../theme/material.css">
-<link rel="stylesheet" href="../theme/mbo.css">
-<link rel="stylesheet" href="../theme/mdn-like.css">
-<link rel="stylesheet" href="../theme/midnight.css">
-<link rel="stylesheet" href="../theme/monokai.css">
-<link rel="stylesheet" href="../theme/neat.css">
-<link rel="stylesheet" href="../theme/neo.css">
-<link rel="stylesheet" href="../theme/night.css">
-<link rel="stylesheet" href="../theme/paraiso-dark.css">
-<link rel="stylesheet" href="../theme/paraiso-light.css">
-<link rel="stylesheet" href="../theme/pastel-on-dark.css">
-<link rel="stylesheet" href="../theme/railscasts.css">
-<link rel="stylesheet" href="../theme/rubyblue.css">
-<link rel="stylesheet" href="../theme/seti.css">
-<link rel="stylesheet" href="../theme/solarized.css">
-<link rel="stylesheet" href="../theme/the-matrix.css">
-<link rel="stylesheet" href="../theme/tomorrow-night-bright.css">
-<link rel="stylesheet" href="../theme/tomorrow-night-eighties.css">
-<link rel="stylesheet" href="../theme/ttcn.css">
-<link rel="stylesheet" href="../theme/twilight.css">
-<link rel="stylesheet" href="../theme/vibrant-ink.css">
-<link rel="stylesheet" href="../theme/xq-dark.css">
-<link rel="stylesheet" href="../theme/xq-light.css">
-<link rel="stylesheet" href="../theme/yeti.css">
-<link rel="stylesheet" href="../theme/zenburn.css">
-<script src="../lib/codemirror.js"></script>
-<script src="../mode/javascript/javascript.js"></script>
-<script src="../addon/selection/active-line.js"></script>
-<script src="../addon/edit/matchbrackets.js"></script>
+        $.ajax({
+          url:"/getfile",
+          type:"post",
+          data:{
+            path:file,
+          },
+          success:function(data){
+             $(".titles span").removeClass('select');
+              $(".titles").append("<span class='select' id='title_"+ file.replace(/\//g,"_")+"'>"+file.split('/')[file.split('/').length-1]+"</span>");
+             file = file.replace(/\//g,"_");
+              var code = '<textarea id="code_'  + file + '" name="code_'+file+'" style="visibility: hidden;"> '+data+'</textarea>';
+              $('.rn-main .file').append(code);
+                  var editor =  showCode("code_" + file );
+
+                  
+             editor.setValue(data);
+             editor.display.wrapper.style.zIndex = maxZIndex++;
 
 
-<script src="../lib/upload.js"></script>
-
-
-<link rel="stylesheet" href="../theme/yeti.css">
-<link rel="stylesheet" href="../theme/zenburn.css">
-<link rel="stylesheet" href="../asset/reset.css">
-
-
-
-  <link rel="stylesheet" href="../lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-  <script type="text/javascript" src="../lib/zTree_v3/js/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.core.js"></script>
-
-
-  <script>
-    
-    
-
-      
-   
-
-    $(document).ready(function(){
-      $.ajax({
-        url:"/app/1",
-        success:function(data){
-          var setting = {
-      data: {
-        simpleData: {
-          enable: true
+             
+          }
+          })
+          });
+        })
+    </script>
+    <style>
+        .rn-sider{float: left;}
+        .CodeMirror{height: 90%;position: absolute;}
+        .file{height: 100%;}
+        .console{height: 10%;width:100%;}
+        .select{
+          border:solid 1px red;
         }
-      }
-    };
-          $.fn.zTree.init($("#treeDemo"), setting, data);
-        }
-      })
-      
-    });
-  </script>
-<style>
-
-  .rn-sider{float: left;}
-  .CodeMirror{height: 90%}
-.console{height: 10%;width:100%;}
-</style>
+    </style>
 </head>
 <body>
+    <header class="rn-header">
+        RNRun
+        <div class="hr">
+            主题:
+            <select onchange="selectTheme()" id=select>
+                <option selected>
+                    default
+                </option>
+                <option>
+                    3024-day
+                </option>
+                <option>
+                    3024-night
+                </option>
+                <option>
+                    abcdef
+                </option>
+                <option>
+                    ambiance
+                </option>
+                <option>
+                    base16-dark
+                </option>
+                <option>
+                    base16-light
+                </option>
+                <option>
+                    bespin
+                </option>
+                <option>
+                    blackboard
+                </option>
+                <option>
+                    cobalt
+                </option>
+                <option>
+                    colorforth
+                </option>
+                <option>
+                    dracula
+                </option>
+                <option>
+                    eclipse
+                </option>
+                <option>
+                    elegant
+                </option>
+                <option>
+                    erlang-dark
+                </option>
+                <option>
+                    hopscotch
+                </option>
+                <option>
+                    icecoder
+                </option>
+                <option>
+                    isotope
+                </option>
+                <option>
+                    lesser-dark
+                </option>
+                <option>
+                    liquibyte
+                </option>
+                <option>
+                    material
+                </option>
+                <option>
+                    mbo
+                </option>
+                <option>
+                    mdn-like
+                </option>
+                <option>
+                    midnight
+                </option>
+                <option>
+                    monokai
+                </option>
+                <option>
+                    neat
+                </option>
+                <option>
+                    neo
+                </option>
+                <option>
+                    night
+                </option>
+                <option>
+                    paraiso-dark
+                </option>
+                <option>
+                    paraiso-light
+                </option>
+                <option>
+                    pastel-on-dark
+                </option>
+                <option>
+                    railscasts
+                </option>
+                <option>
+                    rubyblue
+                </option>
+                <option>
+                    seti
+                </option>
+                <option>
+                    solarized dark
+                </option>
+                <option>
+                    solarized light
+                </option>
+                <option>
+                    the-matrix
+                </option>
+                <option>
+                    tomorrow-night-bright
+                </option>
+                <option>
+                    tomorrow-night-eighties
+                </option>
+                <option>
+                    ttcn
+                </option>
+                <option>
+                    twilight
+                </option>
+                <option>
+                    vibrant-ink
+                </option>
+                <option>
+                    xq-dark
+                </option>
+                <option>
+                    xq-light
+                </option>
+                <option>
+                    yeti
+                </option>
+                <option>
+                    zenburn
+                </option>
+            </select>
+            <i class="iconfont" id="runphone">
+                <a href="javascript:void(0);">
+                    &#xe602;手机运行
+                    <%= id %>
+                    </a>
+                </i>
+            </div>
+        </header>
+        <div class="rn-content">
+            <div class="rn-sider ztree">
+                <ul class="rn-sider-menu" id="treeDemo"  style="padding:10px">
+                </ul>
+            </div>
+            <div class="rn-main">
+                <div class="titles">
+                  
+                </div>
+                <div class="file">
+                  
+                </div>
+                <div class="console">
+                    cccccc
+                </div>
+            </div>
+        </div>
+        <div class="rn-mask-overlay" id="maskqr" style="display: none;z-index: 999999">
+            <div class="rn-mask down">
+                <div class="hd">
+                    <span style="display: block;float: left;line-height: 50px;">
+                        Scan this with our iOS app!
+                    </span>
+                    <img width="120" src="../asset/appstore.png"/>
+                </div>
+                <div class="bd">
+                    <!-- <img src="http://img2.tbcdn.cn/tfscom/TB1Jg3wHpXXXXc0aXXXSutbFXXX.jpg" alt=""/> -->
+                </div>
+            </div>
+        </div>
+    </html>
+    <script>
 
-
-
-  <header class="rn-header"> RNRun 
-
-    <div class="hr">
-    主题:
-<select onchange="selectTheme()" id=select>
-    <option selected>default</option>
-    <option>3024-day</option>
-    <option>3024-night</option>
-    <option>abcdef</option>
-    <option>ambiance</option>
-    <option>base16-dark</option>
-    <option>base16-light</option>
-    <option>bespin</option>
-    <option>blackboard</option>
-    <option>cobalt</option>
-    <option>colorforth</option>
-    <option>dracula</option>
-    <option>eclipse</option>
-    <option>elegant</option>
-    <option>erlang-dark</option>
-    <option>hopscotch</option>
-    <option>icecoder</option>
-    <option>isotope</option>
-    <option>lesser-dark</option>
-    <option>liquibyte</option>
-    <option>material</option>
-    <option>mbo</option>
-    <option>mdn-like</option>
-    <option>midnight</option>
-    <option>monokai</option>
-    <option>neat</option>
-    <option>neo</option>
-    <option>night</option>
-    <option>paraiso-dark</option>
-    <option>paraiso-light</option>
-    <option>pastel-on-dark</option>
-    <option>railscasts</option>
-    <option>rubyblue</option>
-    <option>seti</option>
-    <option>solarized dark</option>
-    <option>solarized light</option>
-    <option>the-matrix</option>
-    <option>tomorrow-night-bright</option>
-    <option>tomorrow-night-eighties</option>
-    <option>ttcn</option>
-    <option>twilight</option>
-    <option>vibrant-ink</option>
-    <option>xq-dark</option>
-    <option>xq-light</option>
-    <option>yeti</option>
-    <option>zenburn</option>
-</select>
-    <i class="iconfont" id="runphone">&#xe602;手机运行1<%= id %></i> </div>
-  </header>
-  <div class="rn-content">
-      <div class="rn-sider ztree" style="padding:0">
-        <ul class="rn-sider-menu" id="treeDemo">
-<!--           <li class="active"><i class="iconfont">&#xe600;</i> <span>index.android.js</span></li>
- -->          <li class="active"><i class="iconfont">&#xe600;</i> <span>index.ios.js</span></li>
-        </ul>
-      </div>
-      <div class="rn-main">
-        <textarea id="code" name="code">
-'use strict';
-import React, {
-  AppRegistry,
-  Component,
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native';
-import Camera from 'react-native-camera';
-
-class Qr extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.Fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
-        </Camera>
-      </View>
-    );
-  }
-
-  takePicture() {
-    this.camera.capture()
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    color: '#000',
-    padding: 10,
-    margin: 40
-  }
-});
-
-module.exports = Qr;</textarea>
-      <div class="console">console</div>
-
-      </div>
-  </div>
-
-<div class="rn-mask-overlay" id="maskqr" style="display: none;z-index: 999999">
-<div class="rn-mask down">
-  <div class="hd"><span style="display: block;float: left;line-height: 50px;">Scan this with our iOS app!</span><img width="120" src="../asset/appstore.png"/></div>
-  <div class="bd"><img src="http://img2.tbcdn.cn/tfscom/TB1Jg3wHpXXXXc0aXXXSutbFXXX.jpg" alt=""></div>
-</div> 
-</div>  
+        function showCode(file){
+           window["editor_"+file] = CodeMirror.fromTextArea(document.getElementById(file), {
+              theme:"mbo",
+              height:"100%",
+              lineNumbers: true,
+              styleActiveLine: true,
+              matchBrackets: true
+          });
+           console.log("editor_"+file);
+           return  window["editor_"+file];
+        }
+       
+        var input = document.getElementById("select");
+        function selectTheme() {
+          var theme = input.options[input.selectedIndex].textContent;
+          editor.setOption("theme", theme);
+          location.hash = "#" + theme;
+        }
+        CodeMirror.on(window, "hashchange", function() {
+          var theme = location.hash.slice(1);
+          if (theme) { input.value = theme; selectTheme(); }
+        });
+        document.getElementById('runphone').onclick = function(){
+          document.getElementById('maskqr').style.display="block";
+        }
+        document.getElementById('maskqr').onclick = function(){
+        document.getElementById('maskqr').style.display="none";
+        }
+        ;(function() {
+        if (document.querySelector(".rn-sider")) {
+        drapHandler(document.querySelector(".rn-sider"),function(){
+        console.log(arguments);
+        });
+        } else {
+        setTimeout(arguments.callee, 1000);
+        }
+        })();
+    </script>
+</body>
 </html>
-<script>
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    theme:"mbo",
-    height:"100%",
-    lineNumbers: true,
-    styleActiveLine: true,
-    matchBrackets: true
-  });
-  var input = document.getElementById("select");
-  function selectTheme() {
-    var theme = input.options[input.selectedIndex].textContent;
-    editor.setOption("theme", theme);
-    location.hash = "#" + theme;
-  }
-  var choice = (location.hash && location.hash.slice(1)) ||
-               (document.location.search &&
-                decodeURIComponent(document.location.search.slice(1)));
-  if (choice) {
-    input.value = choice;
-    editor.setOption("theme", choice);
-  }
-  CodeMirror.on(window, "hashchange", function() {
-    var theme = location.hash.slice(1);
-    if (theme) { input.value = theme; selectTheme(); }
-  });
-  document.getElementById('runphone').onclick = function(){
-    document.getElementById('maskqr').style.display="block";
-  }
-  document.getElementById('maskqr').onclick = function(){
-    document.getElementById('maskqr').style.display="none";
-  }
-
-
-;(function() {
-     if (document.querySelector(".rn-sider")) {
-         drapHandler(document.querySelector(".rn-sider"),function(){
-            console.log(arguments);
-         });
-     } else {
-         setTimeout(arguments.callee, 1000);
-     }
- })();
-
-</script>
-  </body>
-  </html>

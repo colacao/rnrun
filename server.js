@@ -27,7 +27,8 @@ app.set("view options", {
 app.engine('html', require('ejs').renderFile);
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+var bodyParser     =         require("body-parser");  
+app.use(bodyParser.urlencoded({ extended: false })); 
 
 function initDB() {
   console.log('initDB');
@@ -37,7 +38,7 @@ function initDB() {
     //项目
   db.run("CREATE TABLE IF NOT EXISTS projects (id integer PRIMARY KEY autoincrement, uid integer,name TEXT,desc TEXT,created datetime default (datetime('now', 'localtime')) )");
   //文件
-  db.run("CREATE TABLE IF NOT EXISTS files (id integer PRIMARY KEY autoincrement, pid integer,name TEXT,path TEXT,created datetime default (datetime('now', 'localtime')) )");
+  db.run("CREATE TABLE IF NOT EXISTS files (id integer PRIMARY KEY autoincrement,mid TEXT, did TEXT,pid integer,name TEXT,path TEXT,created datetime default (datetime('now', 'localtime')) )");
 
 
   //  db.run("insert into users(name,nikename,pwd) values($name,$nickname,$pwd)", {
@@ -112,6 +113,46 @@ app.get('/', function(req, res) {
     data: data
   });
 });
+
+
+var _getDirList = function(req, res) {
+  //console.log(req.body);
+  var dir = req.body['dir'];
+  var r = '<ul class="jqueryFileTree" style="display: none;">';
+    try {
+        r = '<ul class="jqueryFileTree" style="display: none;">';
+    var files = fs.readdirSync(dir);
+    files.forEach(function(f){
+      var ff = dir + f;
+      var stats = fs.statSync(ff)
+            if (stats.isDirectory()) { 
+                r += '<li class="directory collapsed"><a href="#" rel="' + ff  + '/">' + f + '</a></li>';
+            } else {
+              var e = f.split('.')[1];
+              r += '<li class="file ext_' + e + '"><a href="#" rel='+ ff + '>' + f + '</a></li>';
+            }
+    });
+    r += '</ul>';
+  } catch(e) {
+    r += 'Could not load directory: ' + dir;
+    r += '</ul>';
+  }
+  console.log(r);
+  res.send(r)
+}
+app.post("/filetree/",function(req, res){
+  //console.log(req.body.);
+ _getDirList(req,res)
+
+});
+app.post("/getfile/",function(req, res){
+ 
+var rf=require("fs");  
+var data=rf.readFileSync(req.body.path,"utf-8");  
+res.send(data)
+console.log(data);  
+
+})
 app.get('/add', function(req, res) {
   res.render('add', {});
 });
@@ -136,6 +177,23 @@ function mkdirsSync(dirpath, mode) {
   return true;
 }
 
+function addFile(filename,arr) {
+  var db = new sqlite3.Database('db/rnrun.sqlite3');
+  db.run("insert into files(pid,name,path) values($pid,$name,$path)", {
+    //$mid:(arr.join('/')+"/"+filename).replace("./public/upload/", ""),
+    //$did:(arr.join('/')).replace("./public/upload/", ""),
+    $pid: 1,
+    $name: filename,
+    $path: arr.join('/')
+  }, function(err) {
+    console.log(err);
+    db.close();
+    if(err){
+        addFile(filename,arr);
+    }
+  });
+}
+
 app.post('/upload', upload.single('uploadImg'), function(req, res, next) {
 
   var tmp_path = req.file.path;
@@ -145,14 +203,7 @@ app.post('/upload', upload.single('uploadImg'), function(req, res, next) {
   mkdirsSync(arr.join('/'));
 
   //---------db-------------------------
-  var db = new sqlite3.Database('db/rnrun.sqlite3');
-  db.run("insert into files(pid,name,path) values($pid,$name,$path)", {
-    $pid: 1,
-    $name: filename,
-    $path: arr.join('/')
-  },function(err){
-    db.close();
-  });
+  addFile(filename,arr);
   // 
   //---------db-------------------------
 
@@ -166,43 +217,65 @@ app.post('/upload', upload.single('uploadImg'), function(req, res, next) {
   });
 });
 
-
+var tempID={};
+var tempNumber=1;
+function getID(str){
+  if(!tempID[str]){
+       tempNumber++;
+       tempID[str]=tempNumber;
+  }
+      return tempID[str]
+}
 app.get('/app/:id', function(req, res) {
-   var db = new sqlite3.Database('db/rnrun.sqlite3');
+  var db = new sqlite3.Database('db/rnrun.sqlite3');
   db.all('select * from files where pid=$pid', {
     $pid: 1
   }, function(err, rows) {
     db.close();
     res.json((function(data) {
-  var ret = [];
-  ret.push({
-    id:1,
-    pId:0,
-    name:"fuck",
-    open:true
+      var ret = [];
+      ret.push({
+        id: 1,
+        pId: 0,
+        name: "fuck",
+        open: true
+      });
+      var dir = {}
+      for (var i = 0; i < data.length; i++) {
+       
+          console.log(data[i].path);
+
+          var tempDir = data[i].path.replace("./public/upload/", "").split('/');
+          console.log(tempDir);
+          for(var k=0;k<tempDir.length;k++){
+              console.log(tempDir[k]);
+             if(!dir[tempDir]){
+                dir[tempDir[k]]=tempDir[k];
+                // ret.push({
+                //     id:tempDir.length,
+                //     pId:0,
+                //     name:dir[tempDir[k]]
+                // })
+             }
+
+          }
+        console.log(dir);
+          // ret.push({
+          //     id:getID(data[i].mid),
+          //     pId:getID(data[i].did),
+          //     name:data[i].name
+          // })
+      }
+     
+     // console.log(ret);
+      return ret;
+    })(rows));
   });
-  for (var i = 0; i < data.length; i++) {
-    var obj = {
-      id: (function(p,n){
-          return (p.replace("./public/upload/","").split('/').length)+1
-      })(data[i].path, data[i].name),
-      pId: (function(p,n){
-          return (p.replace("./public/upload/","").split('/').length)
-      })(data[i].path, data[i].name),
-      name: data[i].name
-    }
-    ret.push(obj);
-  }
-  //console.log(ret);
-  return ret;
-})(rows)
-);
- });
 });
 app.get('/apps/:id', function(req, res) {
-     res.render('add', {
-      id: req.params.beginid
-    });
+  res.render('add', {
+    id: req.params.beginid
+  });
 });
 app.get('/api/index/:beginid', function(req, res) {
   console.log(req.params.beginid);

@@ -137,7 +137,7 @@ var _getDirList = function(req, res) {
     r += 'Could not load directory: ' + dir;
     r += '</ul>';
   }
-  console.log(r);
+  //console.log(r);
   res.send(r)
 }
 app.post("/filetree/",function(req, res){
@@ -150,7 +150,7 @@ app.post("/getfile/",function(req, res){
 var rf=require("fs");  
 var data=rf.readFileSync(req.body.path,"utf-8");  
 res.send(data)
-console.log(data);  
+//console.log(data);  
 
 })
 app.get('/add', function(req, res) {

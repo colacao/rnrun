@@ -29,7 +29,7 @@
                      $(".titles span").removeClass('select');
                  $(".titles").append("<span class='select' id='title_" + file.replace(/\//g, "_") + "'>" + file.split('/')[file.split('/').length - 1] + "</span>");
                  file = file.replace(/\//g, "_");
-                 var code = '<div id="code_' + file + '" name="code_' + file + '" style="position: absolute"> ' + data + '</div>';
+                 var code = '<div id="code_' + file + '" name="code_' + file + '" style="position: absolute;background-color:#f5f5f5"> ' + data + '</div>';
                  var t = document.createElement('div');
                  t.innerHTML = code;
                  var el = t.removeChild(t.firstChild);

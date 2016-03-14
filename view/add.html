@@ -74,47 +74,11 @@
     <script src="../lib/jquery.fileTree-1.01/jqueryFileTree.js" type="text/javascript">
     </script>
     <link href="../lib/jquery.fileTree-1.01/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
-    <script>
-        var maxZIndex=9;
-        $(function(){
-        $('#treeDemo').fileTree({expandSpeed:100,collapseSpeed:100, root: 'public/upload/doc/', script: '../filetree' }, function(file) {
-
-          if( window["editor_code_"+ file.replace(/\//g,"_")]){
-           
-             $(".titles span").removeClass('select');
-             $(document.getElementById("title_"+file.replace(/\//g,"_"))).addClass('select');
-            window["editor_code_"+ file.replace(/\//g,"_")].display.wrapper.style.zIndex = maxZIndex++;
-            return;
-          }
-
-        $.ajax({
-          url:"/getfile",
-          type:"post",
-          data:{
-            path:file,
-          },
-          success:function(data){
-             $(".titles span").removeClass('select');
-              $(".titles").append("<span class='select' id='title_"+ file.replace(/\//g,"_")+"'>"+file.split('/')[file.split('/').length-1]+"</span>");
-             file = file.replace(/\//g,"_");
-              var code = '<textarea id="code_'  + file + '" name="code_'+file+'" style="visibility: hidden;"> '+data+'</textarea>';
-              $('.rn-main .file').append(code);
-                  var editor =  showCode("code_" + file );
-
-                  
-             editor.setValue(data);
-             editor.display.wrapper.style.zIndex = maxZIndex++;
-
-
-             
-          }
-          })
-          });
-        })
-    </script>
+    
+    <script src="../asset/page.js"></script>
     <style>
         .rn-sider{float: left;}
-        .CodeMirror{height: 90%;position: absolute;}
+        .CodeMirror{height: 90%;position: absolute;width:100%;}
         .file{height: 100%;}
         .console{height: 10%;width:100%;}
         .select{
@@ -309,6 +273,7 @@
     <script>
 
         function showCode(file){
+
            window["editor_"+file] = CodeMirror.fromTextArea(document.getElementById(file), {
               theme:"mbo",
               height:"100%",
@@ -318,6 +283,7 @@
           });
            console.log("editor_"+file);
            return  window["editor_"+file];
+        
         }
        
         var input = document.getElementById("select");

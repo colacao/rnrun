@@ -6,7 +6,7 @@ var app = express();
 var fs = require('fs');
 var sqlite3 = require('sqlite3').verbose();
 var md5 = require('md5');
-
+var markdown = require('markdown').markdown;
 var db = new sqlite3.Database('db/rnrun.sqlite3');
 
 
@@ -143,6 +143,16 @@ var _getDirList = function(req, res) {
 app.post("/filetree/",function(req, res){
   //console.log(req.body.);
  _getDirList(req,res)
+
+});
+app.get("/makedown/:id",function(req,res){
+
+ var rf=require("fs");  
+var data=rf.readFileSync("public/upload/doc/README.md","utf-8");  
+
+ var html = markdown.toHTML(data);  
+ 
+res.send(html)
 
 });
 app.post("/getfile/",function(req, res){

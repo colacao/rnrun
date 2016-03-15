@@ -125,11 +125,13 @@ var _getDirList = function(req, res) {
     files.forEach(function(f){
       var ff = dir + f;
       var stats = fs.statSync(ff)
-            if (stats.isDirectory()) { 
+            if (stats.isDirectory() && f!=".git") { 
                 r += '<li class="directory collapsed"><a href="#" rel="' + ff  + '/">' + f + '</a></li>';
             } else {
               var e = f.split('.')[1];
-              r += '<li class="file ext_' + e + '"><a href="#" rel='+ ff + '>' + f + '</a></li>';
+              if(f!=".DS_Store"){
+                r += '<li class="file ext_' + e + '"><a href="#" rel='+ ff + '>' + f + '</a></li>';
+              }
             }
     });
     r += '</ul>';
@@ -151,7 +153,7 @@ app.get("/makedown/:id",function(req,res){
 var data=rf.readFileSync("public/upload/doc/README.md","utf-8");  
 
  var html = markdown.toHTML(data);  
- 
+
 res.send(html)
 
 });

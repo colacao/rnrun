@@ -1,8 +1,13 @@
  var maxZIndex = 9;
+ var firstRun = true;
  $(function() {
      $('#treeDemo').fileTree({
+
          onLoad: function() {
-             $('#treeDemo a:contains("README.md")')[0].click();
+            if(firstRun){
+                $('#treeDemo a:contains("README.md")').click();
+                  firstRun = false;
+            }
          },
          expandSpeed: 100,
          collapseSpeed: 100,
@@ -12,14 +17,13 @@
          if (window["editor_code_" + file.replace(/\//g, "_")]) {
              $(".titles span").removeClass('select');
              $(document.getElementById("title_" + file.replace(/\//g, "_"))).addClass('select');
-           if( window["editor_code_" + file.replace(/\//g, "_")].display){
-             window["editor_code_" + file.replace(/\//g, "_")].display.wrapper.style.zIndex = maxZIndex++;
-         }else{
-                         window["editor_code_" + file.replace(/\//g, "_")].style.zIndex = maxZIndex++;
+             if (window["editor_code_" + file.replace(/\//g, "_")].display) {
+                 window["editor_code_" + file.replace(/\//g, "_")].display.wrapper.style.zIndex = maxZIndex++;
+             } else {
+                 window["editor_code_" + file.replace(/\//g, "_")].style.zIndex = maxZIndex++;
 
-         }
+             }
              return;
-       
          }
 
          if (file.split('/')[file.split('/').length - 1] == "README.md") {
@@ -27,18 +31,18 @@
                  url: "/makedown/1",
                  success: function(data) {
                      $(".titles span").removeClass('select');
-                 $(".titles").append("<span class='select' id='title_" + file.replace(/\//g, "_") + "'>" + file.split('/')[file.split('/').length - 1] + "</span>");
-                 file = file.replace(/\//g, "_");
-                 var code = '<div class="CodeMirror" id="code_' + file + '" name="code_' + file + '" style="position: absolute;background-color:#f5f5f5;overflow: scroll"> ' + data + '</div>';
-                 var t = document.createElement('div');
-                 t.innerHTML = code;
-                 var el = t.removeChild(t.firstChild);
-                 $('.rn-main .file').append(el);
-                 
-   window["editor_code_"+file] = el;
-                
-                }
-            });
+                     $(".titles").append("<span class='select' id='title_" + file.replace(/\//g, "_") + "'>" + file.split('/')[file.split('/').length - 1] + "</span>");
+                     file = file.replace(/\//g, "_");
+                     var code = '<div class="CodeMirror" id="code_' + file + '" name="code_' + file + '" style="position: absolute;background-color:#f5f5f5;overflow: scroll"> ' + data + '</div>';
+                     var t = document.createElement('div');
+                     t.innerHTML = code;
+                     var el = t.removeChild(t.firstChild);
+                     $('.rn-main .file').append(el);
+
+                     window["editor_code_" + file] = el;
+
+                 }
+             });
              return;
          }
 

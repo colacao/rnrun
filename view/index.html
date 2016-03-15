@@ -27,7 +27,7 @@ h2{margin: 0;}
 }
 .hr ul li{
   float: left;
-  width: 120px;
+  width: 100px;
   list-style: none;
   text-align: center;
   line-height: 40px;
@@ -42,13 +42,14 @@ h2{margin: 0;}
   margin: 0 10px;
 }
 .rn-main li .desc{
+  font-size: 14px;
   display: block;
   width: 100%;
   background-color: #000;
   color:#fff;
   position: absolute;
   bottom: 0;
-  opacity: .7;
+  opacity: .8;
   height: 100px;
 }
 .rn-main li .desc ul{
@@ -60,71 +61,47 @@ h2{margin: 0;}
 </style>
 </head>
 <body>
-
-
-
-  <header class="rn-header" style="height:80px">         <a href="/">RNRun</a>
- 
+  <header class="rn-header" style="height:80px">
+      <a href="/" style="text-align: left;">RNRun</a>
       <h2>构建，测试和分享React Native应用程序</h2>
-
-    <div class="hr">
-    <ul>
-      <li><a href="/add">新建</a></li>
-      <li>登陆</li>
-     
-    </ul>
-    </div>
+      <div class="hr">
+        <ul>
+          <li><a href="/add">新建</a></li>
+          <li>登陆</li>
+        </ul>
+      </div>
   </header>
   <div class="rn-content">
-     
-      <div class="rn-main" style="width: 100%;overflow: scroll;">
-         <% if (data.length) { %>  
-  <ul>  
-    <% data.forEach(function(app){ %>  
-      <li foo='<%= app.id + "'" %>'>
-      <a href="apps/<%= app.id %>">
-       <% if (app.images.length) { %>
-      <img src="../images/<%= app.images[0].name %>" alt="">
-      <% } %>
-      <div class="desc">
-      <ul>
-        <li>      <%= app.name %>
-</li>
-  <li><%= app.auth %></li>
-        <li><% app.platform.forEach(function(platform){ %>
-       <a href=""><%= platform %></a> 
- <% }) %>
-        </li>
-<li>
-       <a href="">运次:<%= app.count.run %></a> 
-              <a href="">喜欢:<%= app.count.up %></a> 
-                            <a href="">不喜欢:<%= app.count.down %></a> 
-
-
-        </li>
-      </ul>
-    </div>
-    </a>
-      </li>  
-
-    <% }) %>  
-  </ul>  
-<% } %>  
-        </div>
-    
+      <div class="rn-main" style="width: 100%;overflow: scroll;"><% if (data.length) { %>  
+          <ul><% data.forEach(function(app){ %>  
+              <li foo='<%= app.id %>'><% if (app.images.length) { %>
+                  <img src="../images/<%= app.images[0].name %>" alt=""><% } %>
+                  <div class="desc">
+                    <ul>
+                      <li> <%= app.name %></li>
+                      <li><%= app.auth %></li>
+                      <li><% app.platform.forEach(function(platform){ %>
+                          <a href=""><%= platform %></a> <% }) %>
+                      </li>
+                      <li>
+                          <a href="">运次:<%= app.count.run %></a> 
+                          <a href="">喜欢:<%= app.count.up %></a> 
+                          <a href="">不喜欢:<%= app.count.down %></a> 
+                      </li>
+                    </ul>
+                  </div>
+              </li> <% }) %>  
+          </ul>  <% } %>  
+      </div>
   </div>
-<div class="foot">
-  <ul><li>关于我们</li><li>沪ICP备14030813号-6</li></ul>
-</div>
+  <div class="foot">
+    <ul><li>关于我们</li><li>沪ICP备14030813号-6</li></ul>
+  </div>
 <div class="rn-mask-overlay" id="maskqr" style="display: none;z-index: 999999">
 <div class="rn-mask down">
   <div class="hd"><span style="display: block;float: left;line-height: 50px;">Scan this with our iOS app!</span><img width="120" src="../asset/appstore.png"/></div>
   <div class="bd"><img src="http://img2.tbcdn.cn/tfscom/TB1Jg3wHpXXXXc0aXXXSutbFXXX.jpg" alt=""></div>
 </div> 
-</div>  
+</div> 
+</body> 
 </html>
-<script>
- 
-</script>
-  </body>
-  </html>
